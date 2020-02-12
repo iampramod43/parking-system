@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/dashboardback">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="180"
+            android:src="@drawable/geometry" />
+
+        <com.google.android.material.button.MaterialButton
+
+            android:id="@+id/login"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="177dp"
+            android:layout_height="62dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="193dp"
+            android:layout_marginRight="193dp"
+            android:layout_marginBottom="463dp"
+            android:text="Login"
+            android:textColor="#fff"
+            app:cornerRadius="30dp"
+            android:textSize="25sp"
+            app:icon="@drawable/user" />
+
+        <TextView
+            android:id="@+id/we"
+            android:layout_width="263dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/ptserif"
+            android:text="Welcome"
+            android:textColor="@color/welcome"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/signUp"
+            android:layout_width="358dp"
+            android:layout_height="38dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="219dp"
+            android:layout_marginLeft="219dp"
+            android:layout_marginBottom="153dp"
+            android:text="New User? Register"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

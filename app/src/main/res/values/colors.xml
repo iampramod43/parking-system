@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="neonGreen">#25c474</color>
+    <color name="welcome">#144700</color>
+    <color name="Login">#004500</color>
+    <color name="my_button_enabled_state_color">#43FF00</color>
+    <color name="my_button_disabled_state_color">#EB0D0D</color>
+
+</resources>
