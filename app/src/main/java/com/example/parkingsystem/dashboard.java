@@ -37,6 +37,11 @@ public class dashboard extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), previousbookings.class));
             }
         });
-
+        newBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), parkingLot.class));
+            }
+        });
     }
 }

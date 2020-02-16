@@ -30,15 +30,15 @@
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:background="@drawable/slotbackground"
-        android:enabled="true"
         android:fontFamily="@font/roboto_bold"
         android:text="SLOT 1"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.252" />
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="300dp"

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".parkingLot"></activity>
+        <activity android:name=".booking"></activity>
+        <activity android:name=".parkingLot" />
         <activity android:name=".newBooking" />
         <activity android:name=".previousbookings" />
         <activity android:name=".dashboard" />
