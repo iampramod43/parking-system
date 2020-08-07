@@ -16,48 +16,61 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class signUp extends AppCompatActivity {
 
-    EditText userName, password;
+    EditText emailId, password, phoneNumber, user;
     MaterialButton signUp;
-    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        userName = findViewById(R.id.userName);
+        user = findViewById(R.id.user);
+        emailId = findViewById(R.id.userName);
         password = findViewById(R.id.password);
+        phoneNumber = findViewById(R.id.phoneNumber);
         signUp = findViewById(R.id.signUp);
-        fAuth = FirebaseAuth.getInstance();
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = userName.getText().toString().trim();
+                String userName = user.getText().toString().trim();
+                String email = emailId.getText().toString().trim();
                 String pass = password.getText().toString().trim();
-
-                if (TextUtils.isEmpty(user)) {
-                    userName.setError("Email is required");
+                String phone = phoneNumber.getText().toString().trim();
+                String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(email);
+                if (TextUtils.isEmpty(phone)) {
+                    phoneNumber.setError("Please enter the Phone Number");
+                    return;
+                }
+                if (TextUtils.isEmpty(email)) {
+                    emailId.setError("Email is required");
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
                     password.setError("Please enter the password");
                     return;
                 }
+                if (TextUtils.isEmpty(userName)) {
+                    password.setError("Please enter the Username");
+                    return;
+                }
+                if (!matcher.matches()) {
+                    emailId.setError("Please enter a valid email ID");
+                    return;
+                }
 
-                fAuth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(signUp.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), login.class));
-                        } else {
-                            Toast.makeText(signUp.this, "There was a problem while sign Up", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    Intent intent = new Intent(getApplicationContext(), verifyPhoneNo.class);
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("user", email);
+                    intent.putExtra("pass", pass);
+                    intent.putExtra("userName", userName);
+                    startActivity(intent);
             }
         });
     }

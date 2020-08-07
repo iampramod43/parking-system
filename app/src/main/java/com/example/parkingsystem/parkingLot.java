@@ -3,6 +3,7 @@ package com.example.parkingsystem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class parkingLot extends AppCompatActivity {
     DatabaseReference dbslot3 = databaseReference.child("Slot 3");
     DatabaseReference dbslot4 = databaseReference.child("Slot 4");
     DatabaseReference dbslot5 = databaseReference.child("Slot 5");
+    ProgressDialog progressDialog;
     boolean s1 = false, s2  = false, s3 = false, s4 = false, s5 = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +36,24 @@ public class parkingLot extends AppCompatActivity {
         slot3 = findViewById(R.id.slot3);
         slot4 = findViewById(R.id.slot4);
         slot5 = findViewById(R.id.slot5);
-
+        progressDialog = new ProgressDialog(parkingLot.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_layout);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
         dbslot1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 s1 = (boolean) dataSnapshot.getValue();
                 if (s1) {
                     Log.d("s1", "it is set to disable");
                     slot1.setEnabled(false);
                     slot1.setClickable(false);
+                } else {
+                    slot1.setEnabled(true);
+                    slot1.setClickable(true);
                 }
             }
 
@@ -59,6 +70,9 @@ public class parkingLot extends AppCompatActivity {
                     Log.d("s2", "it is set to disable");
                     slot2.setEnabled(false);
                     slot2.setClickable(false);
+                } else {
+                    slot2.setEnabled(true);
+                    slot2.setClickable(true);
                 }
             }
 
@@ -74,6 +88,9 @@ public class parkingLot extends AppCompatActivity {
                 if (s3) {
                     slot3.setEnabled(false);
                     slot3.setClickable(false);
+                } else {
+                    slot3.setEnabled(true);
+                    slot3.setClickable(true);
                 }
             }
 
@@ -89,6 +106,9 @@ public class parkingLot extends AppCompatActivity {
                 if (s4) {
                     slot4.setEnabled(false);
                     slot4.setClickable(false);
+                } else {
+                    slot4.setEnabled(true);
+                    slot4.setClickable(true);
                 }
             }
 
@@ -101,9 +121,13 @@ public class parkingLot extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 s5 = (boolean) dataSnapshot.getValue();
+                progressDialog.dismiss();
                 if (s5) {
                     slot5.setEnabled(false);
                     slot5.setClickable(false);
+                } else {
+                    slot5.setEnabled(true);
+                    slot5.setClickable(true);
                 }
             }
 
@@ -158,5 +182,9 @@ public class parkingLot extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        progressDialog.dismiss();
     }
 }

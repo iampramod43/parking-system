@@ -2,15 +2,19 @@ package com.example.parkingsystem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -21,7 +25,7 @@ public class login extends AppCompatActivity {
     MaterialButton login;
     EditText userName, password;
     FirebaseAuth fAuth;
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,19 +51,31 @@ public class login extends AppCompatActivity {
                     password.setError("Please enter the password");
                     return;
                 }
+                progressDialog = new ProgressDialog(login.this);
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.progress_layout);
+                progressDialog.getWindow().setBackgroundDrawableResource(
+                        android.R.color.transparent
+                );
 
                 fAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                             startActivity(new Intent(getApplicationContext(), dashboard.class));
                         } else {
                             Toast.makeText(login.this, "There was a problem while Login", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        progressDialog.dismiss();
     }
 }

@@ -8,5 +8,7 @@
     <color name="Login">#004500</color>
     <color name="my_button_enabled_state_color">#43FF00</color>
     <color name="my_button_disabled_state_color">#EB0D0D</color>
-
+    <color name="red">#ff0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#008000</color>
 </resources>

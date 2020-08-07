@@ -9,94 +9,94 @@
     tools:context=".parkingLot">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto_bold"
-        android:text="Available Slots"
-        android:textAlignment="center"
-        android:textColor="#000"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.092"
-        tools:layout_editor_absoluteX="0dp">
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="70dp"
+      android:layout_centerHorizontal="true"
+      android:fontFamily="@font/roboto_bold"
+      android:text="Available Slots"
+      android:textAlignment="center"
+      android:textColor="#000"
+      android:textSize="50sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.092"
+      tools:layout_editor_absoluteX="0dp">
 
-    </TextView>
+  </TextView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/slot1"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:background="@drawable/slotbackground"
-        android:enabled="false"
-        android:fontFamily="@font/roboto_bold"
-        android:text="SLOT 1"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+  <com.google.android.material.button.MaterialButton
+      android:id="@+id/slot1"
+      android:layout_width="300dp"
+      android:layout_height="70dp"
+      android:background="@drawable/slotbackground"
+      android:fontFamily="@font/roboto_bold"
+      android:text="SLOT 1"
+      android:textSize="30sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.495"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.252" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="SLOT 2"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="30sp"
-        android:id="@+id/slot2"
-        android:background="@drawable/slotbackground"
-        app:layout_constraintVertical_bias="0.371" />
+  <com.google.android.material.button.MaterialButton
+      android:layout_width="300dp"
+      android:layout_height="70dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.493"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:text="SLOT 2"
+      android:fontFamily="@font/roboto_bold"
+      android:textSize="30sp"
+      android:id="@+id/slot2"
+      android:background="@drawable/slotbackground"
+      app:layout_constraintVertical_bias="0.371" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="SLOT 3"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="30sp"
-        android:id="@+id/slot3"
-        android:background="@drawable/slotbackground"
-        app:layout_constraintVertical_bias="0.484" />
+  <com.google.android.material.button.MaterialButton
+      android:layout_width="300dp"
+      android:layout_height="70dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.493"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:text="SLOT 3"
+      android:fontFamily="@font/roboto_bold"
+      android:textSize="30sp"
+      android:id="@+id/slot3"
+      android:background="@drawable/slotbackground"
+      app:layout_constraintVertical_bias="0.484" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="SLOT 4"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="30sp"
-        android:id="@+id/slot4"
-        android:background="@drawable/slotbackground"
-        app:layout_constraintVertical_bias="0.599" />
+  <com.google.android.material.button.MaterialButton
+      android:layout_width="300dp"
+      android:layout_height="70dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.493"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:text="SLOT 4"
+      android:fontFamily="@font/roboto_bold"
+      android:textSize="30sp"
+      android:id="@+id/slot4"
+      android:background="@drawable/slotbackground"
+      app:layout_constraintVertical_bias="0.599" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="SLOT 5"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="30sp"
-        android:id="@+id/slot5"
-        android:background="@drawable/slotbackground"
-        app:layout_constraintVertical_bias="0.723" />
+  <com.google.android.material.button.MaterialButton
+      android:layout_width="300dp"
+      android:layout_height="70dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.493"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      android:text="SLOT 5"
+      android:fontFamily="@font/roboto_bold"
+      android:textSize="30sp"
+      android:id="@+id/slot5"
+      android:background="@drawable/slotbackground"
+      app:layout_constraintVertical_bias="0.723" />
 </androidx.constraintlayout.widget.ConstraintLayout>

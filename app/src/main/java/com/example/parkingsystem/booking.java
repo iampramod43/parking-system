@@ -1,11 +1,15 @@
 package com.example.parkingsystem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -17,14 +21,23 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
+import static com.example.parkingsystem.app.CHANNEL_1_ID;
 public class booking extends AppCompatActivity {
+    private NotificationManagerCompat notificationManager;
     TextView slot, durationPriceText;
     MaterialButton startDate, startTime, endDate, endTime, confirm;
     EditText startDateText, startTimeText, endDateText, endTimeText;
@@ -35,14 +48,24 @@ public class booking extends AppCompatActivity {
     int MONTH = calendar.get(Calendar.MONTH);
     int HOUR = calendar.get(Calendar.HOUR);
     int MIN = calendar.get(Calendar.MINUTE);
-    String startDateTime, endDateTime, bookingDuration;
+    String startDateTime, endDateTime, bookingDuration, startDateS, endDateS, startTimeS, endTimeS, costS;
+    String userP;
     boolean confirmBooking = false;
+    FirebaseAuth fAuth;
+    DatabaseReference users;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
-
-
+        fAuth = FirebaseAuth.getInstance();
+        if (fAuth.getCurrentUser() != null) {
+            FirebaseUser user = fAuth.getCurrentUser();
+            userP = user.getPhoneNumber() + ' ';
+            Log.d("user", fAuth.getCurrentUser().toString());
+            users = FirebaseDatabase.getInstance().getReference("users");
+        }
+        notificationManager = NotificationManagerCompat.from(this);
         slot = findViewById(R.id.slot);
         durationPriceText = findViewById(R.id.durationPriceText);
         startDate = findViewById(R.id.startDate);
@@ -62,14 +85,14 @@ public class booking extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                    String date = day + "/" + (month + 1) + "/" + year;
+                        String date = day + "/" + (month + 1) + "/" + year;
 
-                    Calendar calendar1 = Calendar.getInstance();
-                    calendar1.set(Calendar.YEAR, year);
-                    calendar1.set(Calendar.MONTH, month);
-                    calendar1.set(Calendar.DATE, day);
-                    CharSequence dateSeq = DateFormat.format("dd/MM/yyyy",calendar1);
-                    startDateText.setText(dateSeq);
+                        Calendar calendar1 = Calendar.getInstance();
+                        calendar1.set(Calendar.YEAR, year);
+                        calendar1.set(Calendar.MONTH, month);
+                        calendar1.set(Calendar.DATE, day);
+                        CharSequence dateSeq = DateFormat.format("dd/MM/yyyy", calendar1);
+                        startDateText.setText(dateSeq);
                     }
                 }, YEAR, MONTH, DATE);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -104,7 +127,7 @@ public class booking extends AppCompatActivity {
                         calendar1.set(Calendar.YEAR, year);
                         calendar1.set(Calendar.MONTH, month);
                         calendar1.set(Calendar.DATE, day);
-                        CharSequence dateSeq = DateFormat.format("dd/MM/yyyy",calendar1);
+                        CharSequence dateSeq = DateFormat.format("dd/MM/yyyy", calendar1);
                         endDateText.setText(dateSeq);
                     }
                 }, YEAR, MONTH, DATE);
@@ -125,10 +148,14 @@ public class booking extends AppCompatActivity {
                         CharSequence charSequence = DateFormat.format("hh:mm a", calendar1);
                         endTimeText.setText(charSequence);
                         startDateTime = startDateText.getText().toString() + " " + startTimeText.getText().toString();
+                        startDateS = startDateText.getText().toString();
+                        startTimeS = startTimeText.getText().toString();
+                        endDateS = endDateText.getText().toString();
+                        endTimeS = endTimeText.getText().toString();
                         endDateTime = endDateText.getText().toString() + " " + endTimeText.getText().toString();
-                        if (!TextUtils.isEmpty(startDateText.getText().toString()) && !TextUtils.isEmpty(startTimeText.getText().toString()) && !TextUtils.isEmpty(endDateText.getText().toString()) && !TextUtils.isEmpty(endTimeText.getText().toString()) ) {
+                        if (!TextUtils.isEmpty(startDateText.getText().toString()) && !TextUtils.isEmpty(startTimeText.getText().toString()) && !TextUtils.isEmpty(endDateText.getText().toString()) && !TextUtils.isEmpty(endTimeText.getText().toString())) {
                             if (validate(startDateTime, endDateTime)) {
-                                durationPriceText.setText(bookingDuration + "/" + bookingDuration );
+                                durationPriceText.setText(bookingDuration + "/" + bookingDuration);
                                 confirmBooking = true;
                             } else {
                                 confirmBooking = false;
@@ -146,13 +173,17 @@ public class booking extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (confirmBooking) {
-                    Intent intent = new Intent(getBaseContext(), dashboard.class);
-                    startActivity(intent);
+                    Log.d("user=-=-", userP);
+                    bookingDetails bookingDetailsD = new bookingDetails(startDateS, startTimeS, endDateS, endTimeS, bookingDuration, bookingDuration);
+                    users.child(userP).child("booking details").setValue(bookingDetailsD);
+//                    Intent intent = new Intent(getBaseContext(), timer.class);
+//                    intent.putExtra("count", bookingDuration);
+//                    startActivity(intent);
                 }
-        }
+            }
 
 
-            });
+        });
 
 
     }
@@ -177,7 +208,7 @@ public class booking extends AppCompatActivity {
         long diff = TimeUnit.MILLISECONDS.toHours(duration);
         long durMin = TimeUnit.MILLISECONDS.toMinutes(duration);
 
-        if ( diff > 8 || durMin < 10) {
+        if (diff > 8 || durMin < 10) {
             if (durMin < 10) {
                 Toast.makeText(booking.this, "Minimum Parking Time is 10 Minutes", Toast.LENGTH_SHORT).show();
             } else if (diff > 8) {
@@ -187,5 +218,36 @@ public class booking extends AppCompatActivity {
         }
         bookingDuration = durMin + "";
         return true;
+    }
+    public class sendSMS {
+        public String sendSms() {
+            try {
+                // Construct data
+                String apiKey = "apikey=" + "NxBIjIKR3Dk-m80c0ogxROcQ4hwzTGBWtWB316wERG";
+                String message = "&message=" + "This is your message";
+                String sender = "&sender=" + "TXTLCL";
+                String numbers = "&numbers=" + "918123475303";
+
+                // Send data
+                HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
+                String data = apiKey + numbers + message + sender;
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+                conn.getOutputStream().write(data.getBytes("UTF-8"));
+                final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                final StringBuffer stringBuffer = new StringBuffer();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    stringBuffer.append(line);
+                }
+                rd.close();
+
+                return stringBuffer.toString();
+            } catch (Exception e) {
+                System.out.println("Error SMS "+e);
+                return "Error "+e;
+            }
+        }
     }
 }
