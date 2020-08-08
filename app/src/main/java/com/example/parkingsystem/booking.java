@@ -209,9 +209,9 @@ public class booking extends AppCompatActivity {
                     newRef.setValue(bookingDetailsD);
                     String sms = sendSms();
                     Log.d("sms =-=", sms);
-//                    Intent intent = new Intent(getBaseContext(), timer.class);
-//                    intent.putExtra("count", bookingDuration);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), dashboard.class);
+                    intent.putExtra("phone", phone);
+                    startActivity(intent);
 
                 }
             }
@@ -286,5 +286,10 @@ public class booking extends AppCompatActivity {
     public class SendSMS{
 
     }
-
+    @Override
+    public void onBackPressed() {
+       Intent intent = new Intent(getApplicationContext(), dashboard.class);
+       intent.putExtra("phone", phone);
+        startActivity(intent);
+    }
 }

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".timer"></activity>
+        <activity android:name=".bookings"></activity>
+        <activity android:name=".timer" />
         <activity android:name=".verifyPhoneNo" />
         <activity android:name=".verification" />
         <activity android:name=".otpActivity" />

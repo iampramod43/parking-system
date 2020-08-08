@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
@@ -20,12 +21,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class login extends AppCompatActivity {
     MaterialButton login;
     EditText userName, password;
     FirebaseAuth fAuth;
     ProgressDialog progressDialog;
+    String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +73,13 @@ public class login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
-                            startActivity(new Intent(getApplicationContext(), dashboard.class));
+
+//                            Log.d("phone =-=", phone);
+                            Intent intent = new Intent(getApplicationContext(), dashboard.class);
+//                            intent.putExtra("phone", phone);
+                            startActivity(intent);
+//                            startActivity(new Intent(getApplicationContext(), dashboard.class));
+
                         } else {
                             Toast.makeText(login.this, "There was a problem while Login", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
