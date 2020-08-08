@@ -1,5 +1,6 @@
 package com.example.parkingsystem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -23,8 +24,13 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.Tag;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -49,7 +55,7 @@ public class booking extends AppCompatActivity {
     int HOUR = calendar.get(Calendar.HOUR);
     int MIN = calendar.get(Calendar.MINUTE);
     String startDateTime, endDateTime, bookingDuration, startDateS, endDateS, startTimeS, endTimeS, costS;
-    String userP;
+    String userP, phone, username;
     boolean confirmBooking = false;
     FirebaseAuth fAuth;
     DatabaseReference users;
@@ -61,9 +67,33 @@ public class booking extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser() != null) {
             FirebaseUser user = fAuth.getCurrentUser();
-            userP = user.getPhoneNumber() + ' ';
-            Log.d("user", fAuth.getCurrentUser().toString());
+            userP = user.getEmail();
+            Log.d("user", userP);
+            DatabaseReference ref= FirebaseDatabase.getInstance().getReference("users");
             users = FirebaseDatabase.getInstance().getReference("users");
+            Query checkUser = ref.orderByChild("email").equalTo(userP);
+            checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                            phone = (String) messageSnapshot.child("phoneNo").getValue();
+                            username = (String) messageSnapshot.child("userName").getValue();
+                        }
+
+                        Log.d("parent =-=", phone);
+                    } else {
+                        Log.d("parent =-=", "outside");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
         notificationManager = NotificationManagerCompat.from(this);
         slot = findViewById(R.id.slot);
@@ -175,10 +205,14 @@ public class booking extends AppCompatActivity {
                 if (confirmBooking) {
                     Log.d("user=-=-", userP);
                     bookingDetails bookingDetailsD = new bookingDetails(startDateS, startTimeS, endDateS, endTimeS, bookingDuration, bookingDuration);
-                    users.child(userP).child("booking details").setValue(bookingDetailsD);
+                    DatabaseReference newRef = users.child(phone).child("bookings").push();
+                    newRef.setValue(bookingDetailsD);
+                    String sms = sendSms();
+                    Log.d("sms =-=", sms);
 //                    Intent intent = new Intent(getBaseContext(), timer.class);
 //                    intent.putExtra("count", bookingDuration);
 //                    startActivity(intent);
+
                 }
             }
 
@@ -187,7 +221,37 @@ public class booking extends AppCompatActivity {
 
 
     }
+    public String sendSms() {
+        try {
+            // Construct data
+            String apiKey = "apikey=" + "NxBIjIKR3Dk-m80c0ogxROcQ4hwzTGBWtWB316wERG";
+            String message = "&message=" + "Hi " + username + ", your booking has been confirm from " + startDateS + ", "
+                    + startTimeS + " to " + endDateS + ", " + endTimeS + ". The cost is " +
+                    bookingDuration;
+            String sender = "&sender=" + "BECPAR";
+            String numbers = "&numbers=" + phone;
 
+            // Send data
+            HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
+            String data = apiKey + numbers + message + sender;
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+            conn.getOutputStream().write(data.getBytes("UTF-8"));
+            final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            final StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                stringBuffer.append(line);
+            }
+            rd.close();
+
+            return stringBuffer.toString();
+        } catch (Exception e) {
+            System.out.println("Error SMS " + e);
+            return "Error " + e;
+        }
+    }
     public boolean validate(String startDateTime, String endDateTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         Date start = new Date();
@@ -219,35 +283,8 @@ public class booking extends AppCompatActivity {
         bookingDuration = durMin + "";
         return true;
     }
-    public class sendSMS {
-        public String sendSms() {
-            try {
-                // Construct data
-                String apiKey = "apikey=" + "NxBIjIKR3Dk-m80c0ogxROcQ4hwzTGBWtWB316wERG";
-                String message = "&message=" + "This is your message";
-                String sender = "&sender=" + "TXTLCL";
-                String numbers = "&numbers=" + "918123475303";
+    public class SendSMS{
 
-                // Send data
-                HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
-                String data = apiKey + numbers + message + sender;
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
-                conn.getOutputStream().write(data.getBytes("UTF-8"));
-                final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                final StringBuffer stringBuffer = new StringBuffer();
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    stringBuffer.append(line);
-                }
-                rd.close();
-
-                return stringBuffer.toString();
-            } catch (Exception e) {
-                System.out.println("Error SMS "+e);
-                return "Error "+e;
-            }
-        }
     }
+
 }
