@@ -84,7 +84,7 @@ public class dashboard extends AppCompatActivity {
         intent.putExtra("phone", phone);
         intent.putExtra("dummy", true);
         Log.d("parent after =-=",  phone);
-        startActivity(new Intent(getApplicationContext(), bookings.class));
+        startActivity(intent);
       }
     });
     newBooking.setOnClickListener(new View.OnClickListener() {

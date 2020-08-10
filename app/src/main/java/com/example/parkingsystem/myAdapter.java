@@ -20,12 +20,13 @@ public class myAdapter extends FirebaseRecyclerAdapter<bookingDetails,myAdapter.
 
     @Override
     protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull bookingDetails model) {
-        Log.d("model =-=", model.toString());
         holder.start.setText(model.getStartDate());
         holder.cost.setText(model.getCost());
         holder.duration.setText(model.getDuration());
         holder.end.setText(model.getEndDate());
-
+        holder.index.setText(Integer.toString(position + 1));
+        holder.sTime.setText(model.getStartTime());
+        holder.eTime.setText(model.getEndTime());
     }
 
     @NonNull
@@ -37,14 +38,16 @@ public class myAdapter extends FirebaseRecyclerAdapter<bookingDetails,myAdapter.
 
     class myviewholder extends RecyclerView.ViewHolder {
 
-        TextView start, end, cost, duration;
+        TextView start, end, cost, duration, index, sTime, eTime;
         public myviewholder(@NonNull View itemView) {
             super(itemView);
             duration = (TextView)itemView.findViewById(R.id.duration);
             cost = (TextView)itemView.findViewById(R.id.cost);
             start = itemView.findViewById(R.id.startDateTime);
             end = itemView.findViewById(R.id.endDateTime);
-
+            index = itemView.findViewById(R.id.index);
+            sTime = itemView.findViewById(R.id.startTime);
+            eTime = itemView.findViewById(R.id.endTime);
         }
     }
 }

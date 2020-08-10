@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import static com.example.parkingsystem.app.CHANNEL_1_ID;
+import android.os.StrictMode.ThreadPolicy.Builder;
 public class booking extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
     TextView slot, durationPriceText;
@@ -218,7 +220,8 @@ public class booking extends AppCompatActivity {
 
 
         });
-
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
     }
     public String sendSms() {
@@ -227,8 +230,8 @@ public class booking extends AppCompatActivity {
             String apiKey = "apikey=" + "NxBIjIKR3Dk-m80c0ogxROcQ4hwzTGBWtWB316wERG";
             String message = "&message=" + "Hi " + username + ", your booking has been confirm from " + startDateS + ", "
                     + startTimeS + " to " + endDateS + ", " + endTimeS + ". The cost is " +
-                    bookingDuration;
-            String sender = "&sender=" + "BECPAR";
+                    bookingDuration + ". If you do not park out your vehicle before the end time than the time gets extented";
+            String sender = "&sender=" + "TXTLCL";
             String numbers = "&numbers=" + phone;
 
             // Send data
@@ -283,13 +286,6 @@ public class booking extends AppCompatActivity {
         bookingDuration = durMin + "";
         return true;
     }
-    public class SendSMS{
 
-    }
-    @Override
-    public void onBackPressed() {
-       Intent intent = new Intent(getApplicationContext(), dashboard.class);
-       intent.putExtra("phone", phone);
-        startActivity(intent);
-    }
+
 }
